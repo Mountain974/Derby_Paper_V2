@@ -1,7 +1,9 @@
 
 
-<footer>
-    <p>Ma Boutique V1</p>
+<footer style="background-color: #FFF">
+    <div class="pt-3 text-center" >
+        Copyright - Derby Paper 2023
+    </div>
 </footer>
 
 

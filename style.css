@@ -1,9 +1,17 @@
 nav {
-    background-color: aqua !important;
+    /* background-image: url(./images/pelouse-foot.jpg);
+    background-size: cover; */
+    height:150px;
+}
+
+button .btn {
+    background-color:rgb(238, 218, 222) !important; 
 }
 
 
-
+body {
+    background-color:white!important;
+}
 
 
 
