@@ -25,19 +25,18 @@ $article = getArticleFromId($_GET['idArticle']);
     <?php include('./header.php'); ?>
 
 
-
     <main style="background-color: #FFF3FB">
         <h1  class="text-color:white ps-5 pt-3">Produits</h1>
 
         <div class="container pb-5">
             <div class="row">
                 <div class="card col-md-7 offset-md-3">
-                    <img src="<?= "./images/" . $article['image'] ?>" class="card-img-top mt-3 mb-3 w-75 mx-auto" alt="<?php $article['name'] ?>">
+                    <img src="<?= "./images/" . $article['image'] ?>" class="card-img-top mt-3 mb-3 w-75 mx-auto" alt="<?php $article['nom'] ?>">
                     <div class="card-body container w-50 border border-dark mb-4" style="background-color: #FFF3FB">
-                        <h5 class="card-title"><?= $article['name'] ?></h5>
+                        <h5 class="card-title"><?= $article['nom'] ?></h5>
                         <div class="card-text"><?= $article['description'] ?></div>
-                        <p class="card-text"><?= $article['detailed_description'] ?></p>
-                        <p class="card-text"><?= $article['price'] ?> €</p>
+                        <p class="card-text"><?= $article['description_detaillee'] ?></p>
+                        <p class="card-text"><?= $article['prix'] ?> €</p>
 
                         <form action="./panier.php" METHOD="GET">
                             <input type="hidden" name="idArticle" value="<?= $article['id'] ?>">

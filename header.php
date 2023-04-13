@@ -13,7 +13,16 @@
           <a class="nav-link active fs-3 px-3" aria-current="page" href="./index.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Accueil</a>
         </li>
         <li class="nav-item rounded-pill" style="background-color:white; border: 3px solid #467A45">
+          <a class="nav-link active fs-3 px-3" aria-current="page" href="./gammes.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Nos Gammes</a>
+        </li>
+        <li class="nav-item rounded-pill" style="background-color:white; border: 3px solid #467A45">
+          <a class="nav-link fs-3 px-3" href="./inscription.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Inscription</a>
+        </li>
+        <li class="nav-item rounded-pill" style="background-color:white; border: 3px solid #467A45">
           <a class="nav-link fs-3 px-3" href="./panier.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Panier</a>
+        </li>
+        <li class="nav-item rounded-pill" style="background-color:white; border: 3px solid #467A45">
+          <a class="nav-link fs-3 px-3" href="./connexion.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Connexion</a>
         </li>
       </ul>
     </div>

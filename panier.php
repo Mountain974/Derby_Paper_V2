@@ -61,7 +61,7 @@ if (isset($_POST['emptyCart'])) {
         if (count($_SESSION['panier']) > 0) { ?>
             <!-- Fonction qui affiche les articles dans la page panier -->
 
-            <?php showArticles(); ?>
+            <?php showArticlesInCart(); ?>
             <div class="card-body text-center pt-3 pb-3 fw-bold border w-75 mx-auto"style="background-color: #FFF">TOTAL : <?php echo totalPriceArticle() ?> €
 
 
