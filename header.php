@@ -16,15 +16,33 @@
           <a class="nav-link active fs-3 px-3" aria-current="page" href="./gammes.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Nos Gammes</a>
         </li>
         <li class="nav-item rounded-pill" style="background-color:white; border: 3px solid #467A45">
-          <a class="nav-link fs-3 px-3" href="./inscription.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Inscription</a>
-        </li>
-        <li class="nav-item rounded-pill" style="background-color:white; border: 3px solid #467A45">
           <a class="nav-link fs-3 px-3" href="./panier.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Panier</a>
         </li>
+
+        <!-- Si je ne suis pas connecté, j'affiche comme cela ma navabar :  -->
+        <?php if (!isset($_SESSION['id'])) {
+        
+          ?><li class="nav-item rounded-pill" style="background-color:white; border: 3px solid #467A45">
+            <a class="nav-link fs-3 px-3" href="./inscription.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Inscription</a>
+          </li>
+          <li class="nav-item rounded-pill" style="background-color:white; border: 3px solid #467A45">
+            <a class="nav-link fs-3 px-3" href="./connexion.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Connexion</a>
+          </li>
+        </ul>
+      <?php } 
+      // Sinon, si je suis connecté, je l'affiche comme cela : 
+      else {?>
         <li class="nav-item rounded-pill" style="background-color:white; border: 3px solid #467A45">
-          <a class="nav-link fs-3 px-3" href="./connexion.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Connexion</a>
+          <a class="nav-link fs-3 px-3" href="./monCompte.php" style="color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Mon compte</a>
         </li>
-      </ul>
+        
+        <form action="./index.php" method="POST">
+          <li class="nav-item rounded-pill" style="background-color:white">
+            <button class="nav-item rounded-pill fs-3 px-3 nav-link" name="deconnexion"  href="./index.php" style="background-color:white; border: 3px solid #467A45 ;color:#467A45 ; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Exit</button>
+          </li>
+        </form>
+      </ul> 
+      <?php } ?>
     </div>
   </div>
 </nav>

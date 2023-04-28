@@ -48,58 +48,23 @@ if (!isset($_SESSION['panier'])) {
             </form>
         </div> -->
 
-        <!-- Formulaire d'inscription -->
-        <div class="container-fluid w-50">
-            <form action="./connexion.php" method="POST">
+        <!-- Formulaire de changement de mdp -->
+        <div class="container-fluid w-50 mt-5 pt-5 mb-5 pb-5">
+            <form action="./index.php" method="POST">
 
                 <div class="row">
-                    <!-- Prénom -->
+                    <!-- Ancien mot de passe -->
                     <div class="col-6 mb-3">
-                        <label for="firstNameUser" class="hidden-label">Prénom</label>
-                        <input type="text" name="firstNameUser" class="form-control" id="firstNameUser" aria-describedby="firstNameUser">
+                        <label for="oldPassword" class="hidden-label">Ancien mot de passe</label>
+                        <input type="password" name="oldPassword" class="form-control" aria-describedby="oldPassword">
                     </div>
-                    <!-- Nom -->
-                    <div class="col-6 mb-3">
-                        <label for="nameUser" class="hidden-label">Nom</label>
-                        <input type="text" name="nameUser" class="form-control" id="nameUser" aria-describedby="nameUser">
-                    </div>
-                </div>
 
                 <div class="row">
-                    <!-- Mail -->
+                    <!-- Nouveau mdp -->
                     <div class="col-6 mb-3">
-                        <label for="emailUser" class="hidden-label">Email</label>
-                        <input type="email" name="emailUser" class="form-control" id="emailUser" aria-describedby="email">
+                        <label for="newPassword" class="hidden-label">Nouveau mot de passe</label>
+                        <input type="password" name="newPassword" class="form-control" aria-describedby="newPassword">
                     </div>
-                    <!-- Mot de passe -->
-                    <div class="col-6 mb-3">
-                        <label for="passwordUser" class="hidden-label">Mot de passe</label>
-                        <input type="text" name="passwordUser" class="form-control" id="passwordUser">
-                    </div>
-                </div>
-                <!-- Adresse -->
-                <div class="mb-3">
-                    <label for="adressUser" class="hidden-label">Adresse</label>
-                    <input type="text" name="adressUser" class="form-control" id="adressUser" aria-describedby="adresse">
-                </div>
-
-                <div class="row">
-                    <!-- Code postal -->
-                    <div class="col-6 mb-3">
-                        <label for="postalCodeUser" class="hidden-label">Code postal</label>
-                        <input type="text" name="postalCodeUser" class="form-control" id="postalCodeUser" aria-describedby="CodePostal">
-                    </div>
-                    <!-- Ville -->
-                    <div class="col-6 mb-3">
-                        <label for="townUser" class="hidden-label">Ville</label>
-                        <input type="text" name="townUser" class="form-control" id="townUser" aria-describedby="ville">
-                    </div>
-                </div>
-
-                <!-- Case à cocher : "Se souvenir de moi" -->
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Se souvenir de moi</label>
                 </div>
 
                 <!-- Bouton "Valider" -->

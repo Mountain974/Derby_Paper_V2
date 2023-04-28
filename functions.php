@@ -237,163 +237,258 @@ function deleteToCart()
 
 // ***************** vérifier la présence de champs vides ************************
 
-function checkEmptyFields()
-{
-    foreach ($_POST as $field) {
-        if (empty($field)) {
-            return true;
-        }
-    }
-    return false;
-}
+ function checkEmptyFields()
+ {
+     foreach ($_POST as $field) {
+         if (empty($field)) {
+             return true;
+         }
+     }
+     return false;
+ }
 
 
 // ***************** vérifier la longueur des champs ************************
 
-function checkInputsLenght()
-{
-    $inputsLenghtOk = true;
+ function checkInputsLenght()
+ {
+     $inputsLenghtOk = true;
 
-    if (strlen($_POST['firstNameUser']) > 25 || strlen($_POST['firstNameUser']) < 3) {
-        $inputsLenghtOk = false;
-    }
+     if (strlen($_POST['firstNameUser']) > 25 || strlen($_POST['firstNameUser']) < 3) {
+         $inputsLenghtOk = false;
+     }
 
-    if (strlen($_POST['nameUser']) > 25 || strlen($_POST['nameUser']) < 3) {
-        $inputsLenghtOk = false;
-    }
+     if (strlen($_POST['nameUser']) > 25 || strlen($_POST['nameUser']) < 3) {
+         $inputsLenghtOk = false;
+     }
 
-    if (strlen($_POST['emailUser']) > 40 || strlen($_POST['emailUser']) < 5) {
-        $inputsLenghtOk = false;
-    }
+     if (strlen($_POST['emailUser']) > 40 || strlen($_POST['emailUser']) < 5) {
+         $inputsLenghtOk = false;
+     }
 
-    if (strlen($_POST['adressUser']) > 40 || strlen($_POST['adressUser']) < 5) {
-        $inputsLenghtOk = false;
-    }
+     if (strlen($_POST['adressUser']) > 40 || strlen($_POST['adressUser']) < 5) {
+         $inputsLenghtOk = false;
+     }
 
-    if (strlen($_POST['postalCodeUser']) !== 5) {
-        $inputsLenghtOk = false;
-    }
+     if (strlen($_POST['postalCodeUser']) !== 5) {
+         $inputsLenghtOk = false;
+     }
 
-    if (strlen($_POST['townUser']) > 25 || strlen($_POST['townUser']) < 3) {
-        $inputsLenghtOk = false;
-    }
+     if (strlen($_POST['townUser']) > 25 || strlen($_POST['townUser']) < 3) {
+         $inputsLenghtOk = false;
+     }
 
-    return $inputsLenghtOk;
-}
+     return $inputsLenghtOk;
+ }
 
 
 // ***************** vérifier que le mot de passe réunit tous les critères demandés ************************
 
-function checkPassword($passwordUser)
-{
-    // minimum 8 caractères et maximum 15, minimum 1 lettre, 1 chiffre et 1 caractère spécial
-    $regex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@$!%*?/&])(?=\S+$).{8,15}$^";
-    return preg_match($regex, $passwordUser);
-}
+ function checkPassword($passwordUser)
+ {
+     // minimum 8 caractères et maximum 15, minimum 1 lettre, 1 chiffre et 1 caractère spécial
+     $regex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@$!%*?/&])(?=\S+$).{8,15}$^";
+     return preg_match($regex, $passwordUser);
+ }
 
 
 // ***************** vérifier que l'e-mail est déjà utilisé ************************
 
-// function checkEmail($emailUser)
-// {
-//     $db = getConnection();
-
-//     $query = $db->prepare("SELECT * FROM clients WHERE email = ?");
-//     $user = $query->execute([$emailUser]);
-
-//     if ($user) {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
+ function checkEmail($emailUser)
+ {
+   $db = getConnection();
+     $query = $db->prepare("SELECT * FROM clients WHERE email = ?");
+     $user = $query->execute([$emailUser]);
+     $nb = $query->rowCount();
+    
+     if ($nb==0) {
+         return false;
+     } else {
+         return true;
+     }
+ }
 // -------------------Récupérer les informations utilisateurs dans le formulaire d'inscription et les stocker en BDD----------------------------
 
 function createUser()
 {
     $db = getConnection();
 
-    // $nameUser = $_POST["nameUser"];
-    // $firstNameUser = $_POST["firstNameUser"];
-    // $emailUser = $_POST["emailUser"];
-    // $passwordUser = $_POST["passwordUser"];
-    // $adressUser = $_POST["adressUser"];
-    // $postalCodeUser = $_POST["postalCodeUser"];
-    // $townUser = $_POST["townUser"];
-    // $idUser = $db->query('SELECT * FROM clients WHERE id = :id');
+      if (checkEmptyFields()) {  // vérif si champs vides => message d'erreur si c'est le cas
+         echo "<div class=\"container w-50 text-center p-3 mt-2 bg-danger text-white\"> Attention : un ou plusieurs champs vides !</div>";
+      } else {
 
-    if (checkEmptyFields()) {  // vérif si champs vides => message d'erreur si c'est le cas
-        echo "<div class=\"container w-50 text-center p-3 mt-2 bg-danger text-white\"> Attention : un ou plusieurs champs vides !</div>";
+          if (checkInputsLenght() == false) {  // vérif si longeur des champs correcte
+             echo "<div class=\"container w-50 text-center p-3 mt-2 bg-danger text-white\"> Attention : longueur incorrecte d'un ou plusieurs champs !</div>";
+          } else {
+
+              if (checkEmail($_POST['emailUser'])) {  // vérif si email déjà utilisé
+                  echo "<div class=\"container w-50 text-center p-3 mt-2 bg-danger text-white\"> Attention : e-mail déjà utilisé !</div>";
+              } else {
+
+                if (!checkPassword(strip_tags($_POST['passwordUser']))) { // vérif si mdp réunit les critères requis
+                    echo "<div class=\"container w-50 text-center p-3 mt-2 bg-danger text-white\"> Attention : sécurité du mot de passe insuffisante !</div>";
+                } else {
+                    // hâchage du mot de passe
+                    echo '<script>alert(\longueur champs ok!\')</script>';
+                    $hashedPassword = password_hash(strip_tags($_POST['passwordUser']), PASSWORD_DEFAULT);
+                    // on prépare la requête SQL (id_game est une variable SQL) 
+                    $query = $db->prepare("INSERT INTO clients (nom, prenom, email, mot_de_passe) VALUES (:nom, :prenom, :email, :mot_de_passe)");
+
+                    // je lance ma requête en indiquant à quoi correspond ma variable sql
+                    $query->execute(array(
+                        'nom' =>  strip_tags($_POST['nameUser']),
+                        'prenom' => strip_tags($_POST['firstNameUser']),
+                        'email' =>  strip_tags($_POST['emailUser']),
+                        'mot_de_passe' => $hashedPassword,
+                    ));
+
+                    // récupération de l'id de l'utilisateur créé
+                    $id = $db->lastInsertId();
+
+                    // insertion de son adresse dans la table adresses
+                    createAdress($id);
+
+                    // on renvoie un message de succès 
+                    echo '<script>alert(\'Le compte a bien été créé !\')</script>';
+                    }
+             }
+         }
+      }
+    
+}
+
+
+
+ function createAdress($id)
+ {
+
+     $db = getConnection();
+
+     // on push les adresses ds la bdd à partir de l'id
+     $query = $db->prepare("INSERT INTO adresses (id_client, adresse, code_postal, ville) VALUES (:id_client, :adresse, :code_postal, :ville)");
+
+     $query->execute(array(
+         'id_client' =>  strip_tags($id),
+         'adresse' => strip_tags($_POST['adressUser']),
+         'code_postal' =>  strip_tags($_POST['postalCodeUser']),
+         'ville' => strip_tags($_POST['townUser']),
+     ));
+ }
+
+// ***************** fonction pr vérifier si l'utilisateur existe ds la bdd lors de sa connexion ************************
+// ***************** se connecter  ************************
+
+function logIn()
+{
+    // connexion à la base de données
+    $db = getConnection();
+
+    // on nettoie l'email saisi avec strip tags, et on le stocke dans la variable $userEmail
+    // pour le manipuler plus facilement
+    $userEmail = strip_tags($_POST['emailUser']);
+
+    // on fait une requête SQL pour vérifier si le client existe, grâce à son email
+    $query = $db->prepare('SELECT * FROM clients WHERE email = ?');
+    $query->execute([$userEmail]);
+    // on récupère le résultat de la requête (soit un utilisateur, soit rien)
+    $result = $query->fetch();
+
+    // si la requête n'a rien récupéré => l'utilisateur n'existe pas
+    if (!$result) {
+        // on renvoie un message d'erreur en JS via la fonction alert() (volontairement imprécis pour ne pas aider les hackers)
+        echo '<script>alert(\'E-mail ou mot de passe incorrect !\')</script>';
+
+        // sinon => l'utilisateur existe
     } else {
+        // on vérifie que son mot de passe saisi (en clair) correspond à son mot de passe en base de données (hashé)
+        // pour cela, on utilise la fonction password_verify, qui compare un mdp en clair (1er paramètre) et un mdp hashé (2è p.)
+        // elle renvoie true si les deux correspondent (le mpd hashé contient des informations qui permettent de faire ça)
+        $isPasswordCorrect = password_verify($_POST['passwordUser'], $result['mot_de_passe']);
 
-        if (checkInputsLenght() == false) {  // vérif si longeur des champs correcte
-            echo "<div class=\"container w-50 text-center p-3 mt-2 bg-danger text-white\"> Attention : longueur incorrecte d'un ou plusieurs champs !</div>";
+        // si les deux correspondent => mot de passe ok => on stocke les infos de l'utilisateur dans la session
+        // on stocke aussi son adresse g^râce à la fonction setSessionAdress()
+        // et on renvoie un message de succès
+        if ($isPasswordCorrect) {
+            $_SESSION['id'] = $result['id'];
+            $_SESSION['nom'] = $result['nom'];
+            $_SESSION['prenom'] = $result['prenom'];
+            $_SESSION['email'] = $userEmail;
+            setSessionAddresses();
+            echo '<script>alert(\'Vous êtes connecté woulah !\')</script>';
+            // sinon, on renvoie un message d'erreur (volontairement imprécis pour ne pas aider les hackers)
         } else {
+            echo '<script>alert(\'E-mail ou mot de passe incorrect wesh !\')</script>';
+        }
+    }
+}
 
-            // if (checkEmail($_POST['emailUser'])) {  vérif si email déjà utilisé
-            //     echo "<div class=\"container w-50 text-center p-3 mt-2 bg-danger text-white\"> Attention : e-mail déjà utilisé !</div>";
-            // } else {
+// ***************** définir / mettre à jour l'adresse de la session ************************
+function deconnexion() {
+    $_SESSION = array();
+    echo "<script> alert('Vous êtes déconnecté(e) !');</script>";
+}
 
-            if (!checkPassword(strip_tags($_POST['passwordUser']))) { // vérif si mdp réunit les critères requis
-                echo "<div class=\"container w-50 text-center p-3 mt-2 bg-danger text-white\"> Attention : sécurité du mot de passe insuffisante !</div>";
-            } else {
 
-                // hâchage du mot de passe
-                echo '<script>alert(\longueur champs ok!\')</script>';
-                $hashedPassword = password_hash(strip_tags($_POST['passwordUser']), PASSWORD_DEFAULT);
+// **************************************************** ADRESSES ***********************************************************
 
-                // on prépare la requête SQL (id_game est une variable SQL) 
-                $query = $db->prepare("INSERT INTO clients (nom, prenom, email, mot_de_passe) VALUES (:nom, :prenom, :email, :mot_de_passe)");
+// ***************** définir / mettre à jour l'adresse de la session ************************
 
-                // je lance ma requête en indiquant à quoi correspond ma variable sql
-                $query->execute(array(
-                    'nom' =>  strip_tags($_POST['nameUser']),
-                    'prenom' => strip_tags($_POST['firstNameUser']),
-                    'email' =>  strip_tags($_POST['emailUser']),
-                    'mot_de_passe' => $hashedPassword,
-                ));
+function setSessionAddresses(){
+    $_SESSION['adresses'] = getUserAdresses();
+}
 
-                // récupération de l'id de l'utilisateur créé
-                $id = $db->lastInsertId();
+// ***************** récupérer l'adresse du client en bdd ************************
 
-                // insertion de son adresse dans la table adresses
-                createAdress($id);
+function getUserAdresses(){
+    $db = getConnection();
 
-                // on renvoie un message de succès 
-                echo '<script>alert(\'Le compte a bien été créé !\')</script>';
-                
+    $query = $db->prepare('SELECT * FROM adresses WHERE id_client = ?');
+    $query->execute([$_SESSION['id']]);
+    return $query->fetchAll();
+}
+
+// ***************** fonction pour récupérer le mdp de l'utiliseur connecté ************************
+
+function getUserPassword(){
+    $db = getConnection();
+
+    $query = $db->prepare('SELECT mot_de_passe FROM clients WHERE id = ?');
+    $query->execute([$_SESSION['id']]);
+    $infos =$query->fetch();
+    return $infos['mot_de_passe'] ;
+}
+
+// ***************** Modification du mdp ************************
+
+
+function modifMotdePasse(){
+    $db = getConnection();
+        $oldPasswordBdd = getUserPassword() ;
+
+    if (checkEmptyFields()) {
+        
+        echo "<script> alert('Erreur : Veuillez renseigner un nouveau mot de passe !');</script>";
+    }
+    else {
+        if(!password_verify(strip_tags($_POST['oldPassword']), $oldPasswordBdd)){
+            echo "<script> alert('Erreur : Ancien mot de passe incorrect !');</script>";
+        }
+        else {
+            $newPassword = strip_tags($_POST['newPassword']) ;
+
+            if (!checkPassword($newPassword)) { 
+                echo "<div class=\"container w-50 text-center p-3 mt-2 bg-danger text-white\"> Attention : Veuillez saisir au moins une lettre, une majuscule, un caractère spécial et au moins 1 chiffre !</div>";
+            }
+            else {
+                $query = $db->prepare('UPDATE clients SET mot_de_passe = ? WHERE id = ?');
+                $query->execute([password_hash($newPassword, PASSWORD_DEFAULT),$_SESSION['id']]);
+                echo "<div class=\"container w-50 text-center p-3 mt-2 bg-success text-white\"> Mot de passe modifié !</div>";
+            
             }
         }
     }
 }
 
-function createAdress($id) {
-    
-    $db = getConnection();
-
-    // on push les adresses ds la bdd à partir de l'id
-    $query = $db->prepare("INSERT INTO adresses (id_client, adresse, code_postal, ville) VALUES (:id_client, :adresse, :code_postal, :ville)");
-
-    $query->execute(array(
-        'id_client' =>  strip_tags($id),
-        'adresse' => strip_tags($_POST['adressUser']),
-        'code_postal' =>  strip_tags($_POST['postalCodeUser']),
-        'ville' => strip_tags($_POST['townUser']),
-    ));
-}
-
-// ***************** fonction pr vérifier si l'utilisateur existe ds la bdd lors de sa connexion ************************
-
-function connexionUser() {
-    $db = getConnection();
-
-   if( ($_POST['emailUser']=$db->query('SELECT * FROM clients WHERE email')) && ($_POST['passwordUser']=$db->query('SELECT * FROM clients WHERE mot_de_passe')) ){
-    echo "Vous êtes connecté";
-   }
-   else{
-    echo "Email ou Mot de passe incorrect(s).";
-   }
-}
 
 
 

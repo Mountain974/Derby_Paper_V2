@@ -22,15 +22,27 @@ if (isset($_POST['finish'])) {
 //****************************************************************** */
 // si j'accède à cette page via la page connexion: 
 
-if (isset($_POST['emailUser'])) {            
+ if (isset($_POST['emailUser'])) {            
+     // je lance la f(x) pour ajouter la donnée ds la BDD
+     logIn();
+}
+
+//****************************************************************** */
+// si j'accède à cette page via le boutton déconnexion du header: 
+
+if (isset($_POST['deconnexion'])) {            
     // je lance la f(x) pour ajouter la donnée ds la BDD
-    connexionUser();
-}?>
+    deconnexion();
+}
 
+//****************************************************************** */
+// si j'accède à cette page via le boutton déconnexion du header: 
 
-
-
-
+if (isset($_POST['newPassword'])) {            
+    // je lance la f(x) pour ajouter la donnée ds la BDD
+    modifMotdePasse();
+}
+//var_dump($oldPasswordBdd);
 
 
 
@@ -41,9 +53,8 @@ if (isset($_POST['emailUser'])) {
 
 ?>
 
-
 <body>
-    <?php include('./header.php') ?>
+    <?php include('./header.php');?>
     <main class=" pb-5">
         <div class=" text-center mt-4 fs-5 d-flex justify-content-center gap-2" style="color:#467A45">
             <img src="./images/flamme.png">

@@ -17,7 +17,7 @@ if (isset($_POST['nameUser'])) {
 }?>
  
 <body>
-    <?php include('./header.php'); ?>
+    <?php include('./header.php');  ?>
 
     <main class=" pb-5">
  
